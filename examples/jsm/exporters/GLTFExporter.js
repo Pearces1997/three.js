@@ -28,6 +28,22 @@ import {
 import { decompress } from './../utils/TextureUtils.js';
 
 
+
+/**
+* @param  {String} validDrawImageType input format
+* validDrawImageType represents the types allowed in context.drawImage()
+*/
+
+const validDrawImageType = {
+	CSSImageValue: true,
+	HTMLCanvasElement: true,
+	HTMLVideoElement: true,
+	ImageBitmap: true,
+	OffscreenCanvas: true,
+	SVGImageElement: true,
+	VideoFrame: true,
+}
+
 /**
  * The KHR_mesh_quantization extension allows these extra attribute component types
  *
@@ -1280,10 +1296,8 @@ class GLTFWriter {
 
 				ctx.putImageData( new ImageData( data, image.width, image.height ), 0, 0 );
 
-			} else {
-
+			} else if (validDrawImageType[typeof image]) {
 				ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
-
 			}
 
 			if ( options.binary === true ) {
